@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:suitmedia_task/pages/first_page.dart';
+import 'package:suitmedia_task/service/userProvider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => Userprovider())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,6 +25,4 @@ class MyApp extends StatelessWidget {
       home: MyFirstPage(),
     );
   }
-}           
-  
-
+}

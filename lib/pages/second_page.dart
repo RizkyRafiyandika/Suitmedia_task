@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:suitmedia_task/model/userModel.dart';
 import 'package:suitmedia_task/pages/third_page.dart';
+import 'package:suitmedia_task/service/userProvider.dart';
 import 'package:suitmedia_task/widget/customeButton.dart';
 
 class MySecondPage extends StatefulWidget {
-  final String name;
-
-  const MySecondPage({super.key, required this.name});
+  const MySecondPage({super.key});
 
   @override
   State<MySecondPage> createState() => _MySecondPageState();
 }
 
 class _MySecondPageState extends State<MySecondPage> {
-  String selectedUserName = "None";
-
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<Userprovider>(context);
+    final String name = userProvider.username;
+    final String selectedUserName = userProvider.selectedUserName;
+
     void _ChooseButton() async {
       final UserModel? selectedUser = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyThirdPage()),
       );
       if (selectedUser != null) {
-        setState(() {
-          selectedUserName =
-              "${selectedUser.firstName} ${selectedUser.lastName}";
-        });
+        userProvider.setSelectedUserName(
+          "${selectedUser.firstName} ${selectedUser.lastName}",
+        );
       }
     }
 
@@ -41,7 +42,7 @@ class _MySecondPageState extends State<MySecondPage> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
-            Text("Name: ${widget.name}", style: TextStyle(fontSize: 18)),
+            Text("Name: ${name}", style: TextStyle(fontSize: 18)),
             SizedBox(height: 10),
             Text(
               "Selected User: ${selectedUserName}",

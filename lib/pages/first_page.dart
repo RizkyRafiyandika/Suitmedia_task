@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:suitmedia_task/pages/second_page.dart';
+import 'package:suitmedia_task/service/userProvider.dart';
 import 'package:suitmedia_task/widget/customeButton.dart';
 import 'package:suitmedia_task/widget/customeTextField.dart';
 
@@ -28,12 +30,12 @@ class _MyFirstPageState extends State<MyFirstPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Result"),
+          title: const Text("Result"),
           content: Text(result ? "isPalindrome" : "not palindrome"),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("OK"),
+              child: const Text("OK"),
             ),
           ],
         );
@@ -42,10 +44,13 @@ class _MyFirstPageState extends State<MyFirstPage> {
   }
 
   void _goToNextScreen() {
+    final userProvider = Provider.of<Userprovider>(context, listen: false);
+    userProvider.setUserName(_nameController.text);
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MySecondPage(name: _nameController.text),
+        builder: (context) => const MySecondPage(),
       ),
     );
   }
@@ -58,22 +63,21 @@ class _MyFirstPageState extends State<MyFirstPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-
           children: [
             CustomTextField(
               label: "Name",
               hintText: "Enter your name",
               controller: _nameController,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             CustomTextField(
               label: "Palindrome",
               hintText: "Enter text to check",
               controller: _palindromeController,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             CustomButton(title: "Polindrome", onPressed: _checkPalindrome),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             CustomButton(title: "Name", onPressed: _goToNextScreen),
           ],
         ),
